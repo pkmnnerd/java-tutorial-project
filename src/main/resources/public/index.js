@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', function() {
       finished: false,
     }
     document.getElementById("addButton").disabled = true;
-    fetch('/api/todolist', {
+    fetch('api/todolist', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(postBody),
@@ -25,7 +25,7 @@ function refreshList() {
   document.getElementById('loading').style.display = 'block';
   document.getElementById('itemList').style.display = 'none';
   document.getElementById('addItemForm').style.display = 'none';
-  fetch('/api/todolist/')
+  fetch('api/todolist/')
     .then(res => res.json())
     .then(body => {
       console.log(body);
@@ -85,7 +85,7 @@ function createItem(itemList, todoItem) {
 function createCompletedHandler(todoItem) {
   return function (e) {
     console.log(e);
-    fetch(`/api/todolist/${todoItem.id}`, {
+    fetch(`api/todolist/${todoItem.id}`, {
       method: 'PUT',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({ ...todoItem, finished: !todoItem.finished }),
@@ -97,7 +97,7 @@ function createCompletedHandler(todoItem) {
 
 function createDeleteHandler(id) {
   return function (e) {
-    fetch(`/api/todolist/${id}`, {method: 'DELETE'})
+    fetch(`api/todolist/${id}`, {method: 'DELETE'})
       .then(res => {
         refreshList();
       });
