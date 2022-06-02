@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
 
 env:
-  REGISTRY: ghcr.io
+  REGISTRY: registry.jumpydoll.com
   IMAGE_NAME: ${{ github.repository }}
 
 
@@ -35,13 +35,12 @@ jobs:
         uses: docker/login-action@28218f9b04b4f3f62068d7b6ce6ca5b26e35336c
         with:
           registry: ${{ env.REGISTRY }}
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.JUMPYDOLL_API_KEY }}
 
       - name: Build image with Jib
         uses: actions/setup-java@v2
         with:
           distribution: 'zulu'
           java-version: '11'
-      - run: 'mvn compile com.google.cloud.tools:jib-maven-plugin:3.1.4:build -Djib.container.environment=JAVA_TOOL_OPTIONS="-XX:+TieredCompilation -XX:TieredStopAtLevel=1" -Dimage=${{ steps.meta.outputs.tags }}'
-
+      - run: 'mvn compile com.google.cloud.tools:jib-maven-plugin:3.2.1:build -Djib.container.environment=JAVA_TOOL_OPTIONS="-XX:+TieredCompilation -XX:TieredStopAtLevel=1" -Dimage=${{ steps.meta.outputs.tags }}'
